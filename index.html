@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Astro Arc Begins in</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 100px;
+      background-color: #121212;
+      color: white;
+    }
+    #countdown {
+      font-size: 3em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Countdown to 5:30 PM (UK Time)</h1>
+  <div id="countdown">Loading...</div>
+
+  <script>
+    function updateCountdown() {
+      const countdownElement = document.getElementById("countdown");
+
+      // Get current time in UTC
+      const now = new Date();
+
+      // Get today's date in UK time (UTC or BST depending on daylight saving)
+      const ukOffset = 0; // UK time is UTC+0 or UTC+1 depending on DST
+      const nowUTC = new Date(now.toUTCString());
+
+      // Create target time for today at 17:30 UK time
+      let target = new Date(nowUTC);
+      target.setUTCHours(17 + ukOffset, 30, 0, 0); // 5:30 PM UK time
+
+      // If time has passed today, set it for tomorrow
+      if (nowUTC > target) {
+        target.setUTCDate(target.getUTCDate() + 1);
+      }
+
+      const diff = target - nowUTC;
+
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdownElement.textContent = 
+        `${hours.toString().padStart(2, '0')}:${minutes
+          .toString()
+          .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
